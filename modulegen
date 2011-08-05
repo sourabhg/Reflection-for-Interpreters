@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Echo commands and halt on error.
+set -xe
+
+b=`basename $1 .hpp`
+
+gccxml -fxml=$b.xml $1
+./codegen $b.xml
+g++ -Wall -Wno-unused -g -fPIC -Wl,-E -shared -o class_$b.so $b.cpp ${b}_meta.cpp
